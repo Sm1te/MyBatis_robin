@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace绑定一个对应的DAO/Mapper接口-->
+<mapper namespace="com.robin.dao.UserMapper">
+
+
+    <select id="getUserList" resultType="user">
+        select * from user
+    </select>
+    
+    <select id="getUserByLimit" parameterType="map" resultType="User" resultMap="UserMap">
+        select * from user limit #{startIndex}, #{endIndex}
+    </select>
+
+    <resultMap id="UserMap" type="User">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="password" column="pwd"/>
+    </resultMap>
+
+    <select id="getUserById" parameterType="int" resultMap="UserMap">
+        select * from user where id = ${id}
+    </select>
+
+    <insert id="addUser" parameterType="com.robin.pojo.User">
+        insert into user(id, name, pwd) value (#{id}, #{name}, #{pwd})
+    </insert>
+
+    <update id="updateUser" parameterType="com.robin.pojo.User">
+        update user set name = #{name}, pwd = #{pwd} where id = #{id}
+    </update>
+
+    <delete id="deleteUser" parameterType="com.robin.pojo.User">
+        delete from user where id - #{id}
+    </delete>
+</mapper>
