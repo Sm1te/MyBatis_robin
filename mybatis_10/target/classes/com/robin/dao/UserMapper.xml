@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.robin.dao.UserMapper">
+    <!-- 通过id查询指定用户信息 -->
+    <!-- parameterType="_int": int类型参数可以起别名“_id”，也可以省略
+         resultType="user": 在核心配置文件中起别名才能直接使用user
+         useCache="true": 使用缓存 -->
+    <select id="queryUserById" resultType="user" useCache="true">
+        select * from mybatis.user where id = #{id}
+    </select>
+
+
+    <!-- 在当前的Mapper.xml映射文件中使用二级缓存, 缓存只作用于cache标签所在的映射文件中的语句 -->
+    <!-- eviction="FIFO": 缓存清除策略为FIFO(即先进先出)
+       flushInterval="60000": 刷新间隔为60秒
+       size="512": 最多可以存储结果对象或列表的512引用
+       readOnly="true": 返回的对象是只读的 -->
+    <!--<cache eviction="FIFO" flushInterval="60000" size="512" readOnly="true"/>-->
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
+    <!-- 更新用户信息 -->
+    <!-- flushCache="false"：如果将其值设置为true，即为允许刷新缓存
+         当需要调优的时候，也可以选择关闭，将其值设置为"false"即可-->
+    <update id="updateUser" parameterType="User" flushCache="true">
+        Update mybatis.user set name = #{name}, pwd = #{pwd} where id = #{id}
+    </update>
+
+</mapper>

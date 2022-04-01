@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!-- configuration: 核心配置 -->
+<configuration>
+
+    <!--引入外部配置文件-->
+    <properties resource="db.properties"/>
+
+    <!-- 设置标准日志输出 -->
+    <settings>
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+        <setting name="cacheEnabled" value="true"/>
+    </settings>
+
+    <!-- 通过给包起别名 -->
+    <typeAliases>
+        <package name="com.robin.pojo"/>
+    </typeAliases>
+
+    <!-- 设置默认环境为开发环境 -->
+    <environments default="development">
+        <!-- 设置一道环境为开发环境 -->
+        <environment id="development">
+            <!--transactionManager: 表示事务管理器, 而MyBatis的默认管理器是JDBC-->
+            <transactionManager type="JDBC"/>
+            <!-- dataSource: 数据源, 作用: 连接数据库(MyBatis的默认数据源类型是POOLED，也就是有池的连接)-->
+            <dataSource type="POOLED">
+                <property name="driver" value="${driver}"/>
+                <property name="url"
+                          value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <!-- 绑定接口：使用class文件绑定注册 -->
+    <mappers>
+        <!-- 同包同名，使用class文件就可以找到, 可以使用注解去测，跟接口配置文件互补-->
+        <mapper class="com.robin.dao.UserMapper"/>
+    </mappers>
+</configuration>
